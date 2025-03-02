@@ -1,3 +1,4 @@
+[![LPZ](https://img.shields.io/badge/LPZ-github-blue?logo=github)](https://github.com/139liu666)
 
 我现在就读于巴黎理工学院，工程师项目，计算机科学方向
 
