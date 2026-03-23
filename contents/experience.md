@@ -66,3 +66,23 @@
 K8s 集群部署与资源管控：独立编写 Kubernetes YAML 资源清单，将整体服务平滑迁移至 K8s 集群。为 Web 节点配置多副本部署 (Replica Deployments)，精细化设置 Pod 的 CPU 与内存资源配额 (Requests/Limits)；利用 KubeDNS 实现 Web 服务与数据库间的内部服务发现与可靠通信。  
 高可用保障与流量网关接入：为确保核心服务的高可用性，针对 Web 服务器与数据库分别定制了 Liveness Probes (存活探针)，建立健康状态监测与自动重启机制；配置基于 MetalLB 的 Ingress 资源，实现了对外部 HTTP 流量的单点接入，并成功完成基于多域名的动态路由分发。     
 
+### **基于 xv6 的操作系统内核核心功能开发**   
+**2025.6 - 2025.7**   
+
+**技术栈: C, xv6 (RISC-V), 操作系统, 内存管理, 并发, 进程调度**
+基于麻省理工学院开源的 xv6 (RISC-V) 教学操作系统，深入内核态完成了系统调用流转、抢占式进程调度、共享内存与文件映射 (mmap) 等核心底层机制的 C 语言开发。 
+**项目亮点：**  
+系统调用与底层同步原语：深入剖析 User-Supervisor 态的 Trap 陷入机制与 Trampoline 汇编路由；从零开发类似 Linux Futex 的底层同步机制（fwait/fwake），利用内核自旋锁（Spinlock）与进程状态机（SLEEPING/RUNNABLE）配合 sched() 调度器，实现多核环境下进程的安全阻塞与唤醒。  
+硬件中断与抢占式调度：配置 RISC-V 架构的 CLINT 时钟中断寄存器，打通内核态与用户态的软硬件中断捕获链路；优化系统默认的非抢占式执行逻辑，实现基于时钟 Tick 的抢占式轮转（Round-Robin）调度器，有效解决了单进程霸占 CPU 导致的系统饥饿问题。  
+虚拟内存与共享内存机制：基于底层物理页分配 (kalloc) 与页表映射 (mappages) 接口，实现了支持跨进程通信的共享内存机制（shm_create/attach），并利用全局自旋锁保障了描述符表的并发安全。 
+文件系统基础内存映射 (mmap)：实现基础的 mmap 与 munmap 系统调用。通过底层文件系统接口 (readi) 将磁盘文件内容直接读取并映射至用户虚拟内存（处理了页对齐边界问题），深刻理解了进程虚拟地址空间与底层多级页表结构的交互逻辑。 
+
+### **基于 Unity HDRP 的高级图形渲染与后处理管线开发**   
+**2025.6 - 2025.7**   
+
+**技术栈: Unity3D, C#, HLSL, Compute Shader, HDRP, 计算机图形学**
+深入 Unity 高清渲染管线（HDRP）底层，利用 HLSL 与 Compute Shader 独立开发了一套包含自定义物理渲染、风格化后处理特效及高性能距离场计算的图形渲染算法库。 
+**项目亮点：**  
+自定义光照模型与 PBR 渲染： 脱离引擎标准材质，从零手写 HLSL Shader 实现 Blinn-Phong 光照模型 与基于 GGX 微面元理论的 PBR 渲染管线 。深入处理法线贴图采样与 TBN 矩阵空间转换 ，完善金属度/粗糙度工作流 ，并通过 C# MaterialPropertyBlock 实现了 CPU 到 GPU 渲染参数的高效动态批处理写入。   
+基于 Custom Pass 的屏幕后处理特效： 基于屏幕空间渲染（Screen Space）实现自定义后处理管线。利用相机深度纹理（Depth Texture），结合 Sobel 一阶导数与 Laplacian 二阶导数算子进行像素级卷积，实现了高精度的全屏边缘检测（描边）特效 ；同时开发了基于 Bayer 矩阵与高频随机噪波的单/多 Pass 抖动（Dithering）与半色调（Halftoning）风格化渲染方案 。   
+基于 Compute Shader 的跳洪算法 (JFA) 与 SDF 生成： 针对传统距离场计算的性能瓶颈，在 Compute Shader 中引入并实现了跳洪算法（Jump Flood Algorithm） 。利用 GPU 的高度并行性，通过 C# 端 CommandBuffer 控制 Render Texture 的多 Pass 步长减半迭代 ，高效生成全局有向距离场（SDF）纹理；并开发配套 Shader 实现了 SDF 的梯度可视化、边缘高光及动态等值线特效 。   
