@@ -19,4 +19,5 @@
 
 #### 技能  
 • 语言技能：法语 DELF B2 、英语 CET4、TOEIC 990   
-• 软件技能：Keil5、Matlab、VS Code、Visual Studio、Unity3D、Docker、Quartus、Modelsime、Linux系统,Android Studio,Arduino       
+• 软件技能：Keil5、Matlab、VS Code、Visual Studio、Unity3D、Docker、Quartus、Modelsime、Linux系统、Android Studio、Arduino       
+• 编程语言：C、C++、C#、Python、Matlab
