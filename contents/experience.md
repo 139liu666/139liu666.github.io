@@ -11,7 +11,7 @@
 
 **技术栈: Android, Kotlin, Jetpack Compose**    
 一款基于 TMDB 官方 API 的响应式电影浏览与追踪应用，支持热门影视浏览、实时搜索、用户登录及云端收藏夹同步。   
-**项目亮点：** 
+**项目亮点：**     
 声明式 UI 与架构构建： 采用 Jetpack Compose 完成 UI 构建。结合 MVVM 架构，将复杂的 UI 状态收敛于 ViewModel，通过单向数据流 (UDF) 保证界面的稳定性和可预测性。  
 复杂网络鉴权与封装： 深入对接 TMDB API。针对繁琐的 OAuth 登录流程，利用 Kotlin 协程 的挂起特性将异步回调同步化；通过编写 OkHttp Interceptor 统一拦截并注入 Bearer Token 与 Session ID，大幅降低代码冗余。  
 高性能列表与响应式交互： 针对海量图片与列表展示，集成 Coil 图片库实现异步加载与内存缓存。利用 LazyVerticalGrid 搭建网格视图，并在底层通过监听滚动状态实现自动分页加载 (Pagination) 机制。   
@@ -60,7 +60,7 @@
 **2024.12 - 2025.1**   
 
 **技术栈: Docker, Kubernetes (K8s), NGINX, MongoDB, Python/Flask**  
-将个人 Web 项目从本地环境平滑迁移至云原生架构，实现了微服务的高可用容器化部署与外部流量动态路由。 
+将个人 Web 项目从本地环境平滑迁移至云原生架构，实现了微服务的高可用容器化部署与外部流量动态路由。    
 **项目亮点：**   
 微服务容器化与本地编排：使用 Docker 对 Flask Web 后端与 MongoDB 数据库进行独立容器化封装。通过 Docker Compose 搭建完整的本地多容器测试环境，并引入 NGINX 作为反向代理，成功验证了多 Web 实例的负载均衡与流量分发逻辑。    
 K8s 集群部署与资源管控：独立编写 Kubernetes YAML 资源清单，将整体服务平滑迁移至 K8s 集群。为 Web 节点配置多副本部署 (Replica Deployments)，精细化设置 Pod 的 CPU 与内存资源配额 (Requests/Limits)；利用 KubeDNS 实现 Web 服务与数据库间的内部服务发现与可靠通信。   
