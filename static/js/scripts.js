@@ -1,6 +1,24 @@
 const content_dir = 'contents/'
 const config_file = 'config.yml'
 const section_names = ['home', 'awards', 'experience', 'workexperience','publications'];
+const section_card_classes = {
+    experience: 'project-card',
+    workexperience: 'career-card',
+};
+const groupMarkdownEntries = (container, cardClass) => {
+    let currentCard = null;
+    Array.from(container.childNodes).forEach(node => {
+        const isEntryHeading = node.nodeType === Node.ELEMENT_NODE && node.matches('h3');
+        if (isEntryHeading) {
+            currentCard = document.createElement('article');
+            currentCard.className = 'entry-card ' + cardClass;
+            container.insertBefore(currentCard, node);
+        }
+        if (currentCard) {
+            currentCard.appendChild(node);
+        }
+    });
+};
 
 
 window.addEventListener('DOMContentLoaded', event => {
@@ -52,7 +70,11 @@ window.addEventListener('DOMContentLoaded', event => {
             .then(response => response.text())
             .then(markdown => {
                 const html = marked.parse(markdown);
-                document.getElementById(name + '-md').innerHTML = html;
+                const container = document.getElementById(name + '-md');
+                container.innerHTML = html;
+                if (section_card_classes[name]) {
+                    groupMarkdownEntries(container, section_card_classes[name]);
+                }
             }).then(() => {
                 // MathJax
                 MathJax.typeset();
