@@ -80,6 +80,42 @@ body {
 #mainNav .navbar-toggler:focus {
     box-shadow: 0 0 0 0.2rem rgba(47, 111, 147, 0.14);
 }
+.language-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    min-width: 4.4rem;
+    padding: 0.5rem 0.72rem;
+    border: 1px solid #d4e1e8;
+    border-radius: 999px;
+    color: var(--accent-deep);
+    background: rgba(244, 249, 251, 0.95);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    white-space: nowrap;
+    transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, transform 180ms ease;
+}
+.language-toggle:hover {
+    border-color: #b9d3df;
+    color: #173f59;
+    background: #e7f1f5;
+    transform: translateY(-1px);
+}
+.language-toggle:focus-visible {
+    outline: 3px solid rgba(47, 111, 147, 0.24);
+    outline-offset: 3px;
+}
+.language-toggle:disabled {
+    cursor: wait;
+    opacity: 0.58;
+    transform: none;
+}
+.language-toggle .bi {
+    font-size: 0.92rem;
+}
 
 .bg-bottom {
     background: linear-gradient(135deg, #132f48, #1f4d6a);
@@ -163,6 +199,10 @@ section .main-body{
     font-size: 1.02rem;
     font-weight: 400;
     line-height: 1.88;
+    transition: opacity 160ms ease;
+}
+body[aria-busy="true"] section .main-body {
+    opacity: 0.48;
 }
 section[id] {
     padding: 3.5rem 0 0;
@@ -470,6 +510,11 @@ footer .text-white-50 {
     #mainNav .navbar-nav .nav-item .nav-link {
         margin: 0.1rem 0;
         padding: 0.65rem 0.75rem;
+    }
+    .language-toggle {
+        width: 100%;
+        margin: 0.35rem 0 0.2rem;
+        padding: 0.7rem 0.8rem;
     }
     .top-section {
         margin-top: 4.3rem;

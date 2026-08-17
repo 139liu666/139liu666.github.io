@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 
 <head>
     <meta charset="utf-8" />
@@ -86,28 +86,33 @@
             <a id="page-top-title" class="navbar-brand fw-bold" href="#page-top"></a>
             <!-- <a href="#page-top"><img src="static/assets/img/CUMT_LOGO.svg" style="width: 11rem;"></a> -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
-                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                MENU
-                <i class="bi-list"></i>
+                aria-controls="navbarResponsive" aria-expanded="false" aria-labelledby="menu-label">
+                <span id="menu-label"></span>
+                <i class="bi-list" aria-hidden="true"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto me-4 my-3 my-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link me-lg-3" href="#home">HOME</a>
+                        <a id="nav-home" class="nav-link me-lg-3" href="#home"></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link me-lg-3" href="#awards">AWARDS</a>
+                        <a id="nav-awards" class="nav-link me-lg-3" href="#awards"></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link me-lg-3" href="#experience">PROJECT EXPERIENCE</a>
+                        <a id="nav-experience" class="nav-link me-lg-3" href="#experience"></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link me-lg-3" href="#workexperience">WORK EXPERIENCE</a>
+                        <a id="nav-workexperience" class="nav-link me-lg-3" href="#workexperience"></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link me-lg-3" href="#publications">PUBLICATIONS</a>
+                        <a id="nav-publications" class="nav-link me-lg-3" href="#publications"></a>
                     </li>
                 </ul>
+                <button id="language-toggle" class="language-toggle" type="button" aria-labelledby="language-toggle-label">
+                    <i class="bi bi-globe2" aria-hidden="true"></i>
+                    <span id="language-toggle-text"></span>
+                    <span id="language-toggle-label" class="visually-hidden"></span>
+                </button>
             </div>
         </div>
     </nav>
@@ -125,7 +130,7 @@
     <!-- Photo -->
     <div class="container px-5">
         <div id="avatar">
-            <img class="shadow" src="static/assets/img/26b4b15783722dcf444e35dd964e415.jpg">
+            <img class="shadow" src="static/assets/img/26b4b15783722dcf444e35dd964e415.jpg" alt="">
         </div>
     </div>
     <!-- Photo -->
@@ -134,7 +139,7 @@
     <section class="bg-gradient-primary-to-secondary-light mt5 md5" id="home">
         <div class="container px-5">
             <header>
-                <h2 id="home-subtitle"> </h2>
+                <h2 id="home-subtitle"></h2>
                 <!-- <span class="bi bi-list"></span> -->
             </header>
             <div class="main-body" id="home-md"></div>
@@ -146,7 +151,7 @@
     <section class="bg-gradient-primary-to-secondary-light mt5 md5" id="awards">
         <div class="container px-5">
             <header>
-                <h2 id="awards-subtitle"><i class="bi bi-award-fill"></i>AWARDS </h2>
+                <h2><i class="bi bi-award-fill" aria-hidden="true"></i><span id="awards-subtitle"></span></h2>
             </header>
             <div class="main-body" id="awards-md"></div>
 
@@ -158,7 +163,7 @@
     <section class="bg-gradient-primary-to-secondary-dark mt5 md5" id="experience">
         <div class="container px-5">
             <header>
-                <h2 id="experience-subtitle"><i class="bi bi-briefcase-fill"></i>PROJECT EXPERIENCE </h2>
+                <h2><i class="bi bi-briefcase-fill" aria-hidden="true"></i><span id="experience-subtitle"></span></h2>
             </header>
             <div class="main-body" id="experience-md"></div>
         </div>
@@ -169,7 +174,7 @@
     <section class="bg-gradient-primary-to-secondary-dark mt5 md5" id="workexperience">
         <div class="container px-5">
             <header>
-                <h2 id="workexperience-subtitle"><i class="bi bi-briefcase-fill"></i>WORK EXPERIENCE </h2>
+                <h2><i class="bi bi-briefcase-fill" aria-hidden="true"></i><span id="workexperience-subtitle"></span></h2>
             </header>
             <div class="main-body" id="workexperience-md"></div>
         </div>
@@ -181,7 +186,7 @@
     <section class="bg-gradient-primary-to-secondary-gray mt5 md5" id="publications">
         <div class="container px-5">
             <header>
-                <h2 id="publications-subtitle"><i class="bi bi-file-text-fill"></i>&nbsp;PUBLICATIONS</h2>
+                <h2><i class="bi bi-file-text-fill" aria-hidden="true"></i><span id="publications-subtitle"></span></h2>
             </header>
             <div class="main-body" id="publications-md"></div>
 

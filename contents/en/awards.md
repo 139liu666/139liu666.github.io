@@ -1,0 +1,3 @@
+- University Second-Class Scholarship, 2021.
+- University Second-Class Scholarship, 2023.
+- Sino-French Inspirational Scholarship, 2023.
