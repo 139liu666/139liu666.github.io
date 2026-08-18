@@ -21,7 +21,7 @@ const organization_profiles = [
         section: 'home',
         selector: 'p > strong',
         website: 'https://www.xidian.edu.cn/',
-        logo: 'https://www.xidian.edu.cn/2020images/logo.png',
+        logo: 'https://www.xidian.edu.cn/favicon.ico',
     },
     {
         aliases: ['巴黎理工学院(QS43)', 'Institut Polytechnique de Paris (QS #43)'],
@@ -42,7 +42,10 @@ const organization_profiles = [
         section: 'workexperience',
         selector: '.career-card > p:first-of-type > strong',
         website: 'https://www.alibabagroup.com/',
-        logo: 'https://upload.wikimedia.org/wikipedia/commons/4/41/Alibaba_en_logo.svg',
+        logos: {
+            zh: 'https://ali-home-data.oss-cn-hangzhou.aliyuncs.com/ecms-files/886024452/97ee3b7b-70a3-4466-b571-7904e7cbf65d.png',
+            en: 'https://ali-home-data.oss-cn-hangzhou.aliyuncs.com/ecms-files/886024452/227dd295-99df-4f13-86b8-767b17c69c04.png',
+        },
     },
 ];
 let active_language = default_language;
@@ -94,19 +97,22 @@ const groupMarkdownEntries = (container, cardClass) => {
 const createEntryDetails = (card, label, content, detailsId) => {
     const disclosure = document.createElement('details');
     const heading = document.createElement('summary');
-    const headingLabel = document.createElement('span');
     const headingIcon = document.createElement('i');
     const details = document.createElement('div');
+    const detailsTitle = document.createElement('h4');
+    const normalizedLabel = label.replace(/[：:]\s*$/, '');
     disclosure.className = 'entry-disclosure';
     heading.className = 'entry-details-heading';
     heading.setAttribute('aria-controls', detailsId);
-    headingLabel.textContent = label.replace(/[：:]\s*$/, '');
+    heading.setAttribute('aria-label', normalizedLabel);
     headingIcon.className = 'bi bi-chevron-down';
     headingIcon.setAttribute('aria-hidden', 'true');
-    heading.append(headingLabel, headingIcon);
+    heading.appendChild(headingIcon);
     details.id = detailsId;
     details.className = 'entry-details';
-    details.appendChild(content);
+    detailsTitle.className = 'entry-details-title';
+    detailsTitle.textContent = normalizedLabel;
+    details.append(detailsTitle, content);
     disclosure.addEventListener('toggle', () => {
         card.classList.toggle('is-expanded', disclosure.open);
         if (main_scroll_spy) {
@@ -164,7 +170,7 @@ const makeCareerCardsExpandable = () => {
         createEntryDetails(card, label, detailContent, 'career-details-' + index);
     });
 };
-const createOrganizationProfile = (label, profile, index) => {
+const createOrganizationProfile = (label, profile, index, language) => {
     const wrapper = document.createElement('span');
     const trigger = document.createElement('span');
     const popover = document.createElement('span');
@@ -180,10 +186,11 @@ const createOrganizationProfile = (label, profile, index) => {
     popover.id = 'organization-profile-' + index;
     popover.className = 'organization-popover';
     logo.className = 'organization-logo';
-    logo.src = profile.logo;
+    logo.src = profile.logos ? profile.logos[language] : profile.logo;
     logo.alt = label;
-    logo.loading = 'lazy';
+    logo.loading = 'eager';
     logo.decoding = 'async';
+    logo.referrerPolicy = 'no-referrer';
     information.className = 'organization-information';
     name.className = 'organization-name';
     name.textContent = label;
@@ -196,7 +203,7 @@ const createOrganizationProfile = (label, profile, index) => {
     wrapper.append(trigger, popover);
     return wrapper;
 };
-const wrapOrganizationAlias = (target, profile, index) => {
+const wrapOrganizationAlias = (target, profile, index, language) => {
     const walker = document.createTreeWalker(target, NodeFilter.SHOW_TEXT);
     const textNodes = [];
     let textNode = walker.nextNode();
@@ -216,20 +223,20 @@ const wrapOrganizationAlias = (target, profile, index) => {
     if (leadingText) {
         fragment.appendChild(document.createTextNode(leadingText));
     }
-    fragment.appendChild(createOrganizationProfile(alias, profile, index));
+    fragment.appendChild(createOrganizationProfile(alias, profile, index, language));
     if (trailingText) {
         fragment.appendChild(document.createTextNode(trailingText));
     }
     matchedNode.replaceWith(fragment);
     return true;
 };
-const enhanceOrganizationProfiles = () => {
+const enhanceOrganizationProfiles = language => {
     organization_profiles.forEach((profile, index) => {
         const container = document.getElementById(profile.section + '-md');
-        Array.from(container.querySelectorAll(profile.selector)).some(target => wrapOrganizationAlias(target, profile, index));
+        Array.from(container.querySelectorAll(profile.selector)).some(target => wrapOrganizationAlias(target, profile, index, language));
     });
 };
-const renderMarkdownSections = markdownTexts => {
+const renderMarkdownSections = (markdownTexts, language) => {
     section_names.forEach((name, index) => {
         const container = document.getElementById(name + '-md');
         container.innerHTML = marked.parse(markdownTexts[index]);
@@ -239,7 +246,7 @@ const renderMarkdownSections = markdownTexts => {
     });
     makeProjectCardsExpandable();
     makeCareerCardsExpandable();
-    enhanceOrganizationProfiles();
+    enhanceOrganizationProfiles(language);
 };
 const typesetMathematics = async () => {
     if (!window.MathJax) {
@@ -265,7 +272,7 @@ const loadLanguage = async language => {
             ...section_names.map(name => fetchText(language_content_dirs[resolvedLanguage] + name + '.md')),
         ]);
         applyLocaleConfig(jsyaml.load(resources[0]));
-        renderMarkdownSections(resources.slice(1));
+        renderMarkdownSections(resources.slice(1), resolvedLanguage);
         document.documentElement.lang = language_tags[resolvedLanguage];
         active_language = resolvedLanguage;
         saveLanguage(resolvedLanguage);

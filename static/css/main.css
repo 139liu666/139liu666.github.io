@@ -350,7 +350,7 @@ section .main-body img {
     align-items: flex-start;
     gap: 0.75rem;
     margin: 0 0 0.85rem;
-    padding: 0;
+    padding: 0 2.75rem 0 0;
     border: 0;
     color: var(--ink-color);
     font-size: clamp(1.12rem, 2vw, 1.34rem);
@@ -420,24 +420,30 @@ section .main-body img {
 .career-card > p:last-child {
     margin-bottom: 0;
 }
+.entry-card > .entry-disclosure {
+    position: static;
+}
 .entry-card .entry-details-heading {
+    position: absolute;
+    top: clamp(1.25rem, 2.7vw, 1.8rem);
+    right: clamp(1.2rem, 3vw, 2rem);
     display: inline-flex;
     align-items: center;
-    justify-content: flex-start;
-    gap: 0.45rem;
-    margin: 1rem 0 0.45rem 1.42rem;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    margin: 0;
     padding: 0;
+    border: 1px solid #cddfe7;
+    border-radius: 50%;
     color: var(--accent-deep);
+    background: rgba(238, 246, 249, 0.94);
     font-family: inherit;
-    font-size: 0.82rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    line-height: 1.4;
-    text-transform: uppercase;
     list-style: none;
     cursor: pointer;
     user-select: none;
-    transition: color 180ms ease;
+    transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
+    z-index: 5;
 }
 .entry-details-heading::-webkit-details-marker {
     display: none;
@@ -447,6 +453,8 @@ section .main-body img {
 }
 .entry-details-heading:hover {
     color: var(--h-title-color);
+    border-color: #afcad7;
+    background: #dfeef4;
 }
 .entry-details-heading:focus-visible {
     border-radius: 0.25rem;
@@ -457,25 +465,31 @@ section .main-body img {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 1.35rem;
-    height: 1.35rem;
-    border-radius: 50%;
     color: var(--accent-deep);
-    background: var(--accent-soft);
-    font-size: 0.65rem;
-    transition: color 180ms ease, background-color 180ms ease, transform 180ms ease;
+    font-size: 0.72rem;
+    transition: color 180ms ease, transform 180ms ease;
 }
 .entry-details-heading:hover .bi {
     color: var(--h-title-color);
-    background: #dbeaf1;
 }
 .entry-disclosure[open] .entry-details-heading .bi {
     transform: rotate(180deg);
 }
 .entry-details {
-    margin: 0 0 0 1.42rem;
+    margin: 1rem 0 0 1.42rem;
     padding: 0;
     animation: entry-details-in 180ms ease-out;
+}
+.entry-card .entry-details-title {
+    margin: 0 0 0.45rem;
+    padding: 0;
+    border: 0;
+    color: var(--accent-deep);
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    line-height: 1.4;
+    text-transform: uppercase;
 }
 .entry-details > p {
     margin: 0;
@@ -552,6 +566,14 @@ section .main-body img {
     border: 0.42rem solid transparent;
     border-top-color: #d3e1e8;
 }
+.organization-popover::before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 0.75rem;
+}
 .organization-profile:hover .organization-popover,
 .organization-profile:focus-within .organization-popover {
     opacity: 1;
@@ -561,7 +583,7 @@ section .main-body img {
 }
 .organization-logo {
     width: 4rem;
-    height: 3.6rem;
+    height: 4rem;
     padding: 0.35rem;
     border: 1px solid #e2eaee;
     border-radius: 0.65rem;
@@ -783,7 +805,7 @@ footer .text-white-50 {
     .entry-card h3 {
         gap: 0.62rem;
         margin-bottom: 0.7rem;
-        padding: 0;
+        padding: 0 2.4rem 0 0;
         font-size: 1.05rem;
     }
     .entry-card h3::before {
@@ -799,9 +821,12 @@ footer .text-white-50 {
         font-size: 0.93rem;
         line-height: 1.76;
     }
-    .entry-details-heading,
     .entry-details {
         margin-left: 1.2rem;
+    }
+    .entry-card .entry-details-heading {
+        top: 1rem;
+        right: 0.9rem;
     }
     footer {
         margin-top: 3rem;
