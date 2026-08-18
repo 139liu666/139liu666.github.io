@@ -476,20 +476,20 @@ section .main-body img {
     transform: rotate(180deg);
 }
 .entry-details {
-    margin: 1rem 0 0 1.42rem;
+    margin: 1rem 0 0;
     padding: 0;
     animation: entry-details-in 180ms ease-out;
 }
 .entry-card .entry-details-title {
-    margin: 0 0 0.45rem;
-    padding: 0;
-    border: 0;
+    width: fit-content;
+    margin: 0 0 0.22rem;
+    padding: 0.18rem 0.5rem;
+    border-radius: 0.4rem;
     color: var(--accent-deep);
-    font-size: 0.82rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    line-height: 1.4;
-    text-transform: uppercase;
+    background: #edf4f7;
+    font-size: 0.91em;
+    font-weight: 700;
+    line-height: 1.55;
 }
 .entry-details > p {
     margin: 0;
@@ -820,9 +820,6 @@ footer .text-white-50 {
     .entry-card > p {
         font-size: 0.93rem;
         line-height: 1.76;
-    }
-    .entry-details {
-        margin-left: 1.2rem;
     }
     .entry-card .entry-details-heading {
         top: 1rem;

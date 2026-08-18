@@ -42,10 +42,7 @@ const organization_profiles = [
         section: 'workexperience',
         selector: '.career-card > p:first-of-type > strong',
         website: 'https://www.alibabagroup.com/',
-        logos: {
-            zh: 'https://ali-home-data.oss-cn-hangzhou.aliyuncs.com/ecms-files/886024452/97ee3b7b-70a3-4466-b571-7904e7cbf65d.png',
-            en: 'https://ali-home-data.oss-cn-hangzhou.aliyuncs.com/ecms-files/886024452/227dd295-99df-4f13-86b8-767b17c69c04.png',
-        },
+        logo: 'https://ali-home-data.oss-cn-hangzhou.aliyuncs.com/ecms-files/886024452/227dd295-99df-4f13-86b8-767b17c69c04.png',
     },
 ];
 let active_language = default_language;
