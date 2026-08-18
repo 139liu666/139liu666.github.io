@@ -15,6 +15,36 @@ const language_tags = {
     zh: 'zh-CN',
     en: 'en',
 };
+const organization_profiles = [
+    {
+        aliases: ['西安电子科技大学', 'Xidian University'],
+        section: 'home',
+        selector: 'p > strong',
+        website: 'https://www.xidian.edu.cn/',
+        logo: 'https://www.xidian.edu.cn/2020images/logo.png',
+    },
+    {
+        aliases: ['巴黎理工学院(QS43)', 'Institut Polytechnique de Paris (QS #43)'],
+        section: 'home',
+        selector: 'p > strong',
+        website: 'https://www.ip-paris.fr/',
+        logo: 'https://upload.wikimedia.org/wikipedia/commons/d/d2/Institut_polytechnique_de_Paris_logo.svg',
+    },
+    {
+        aliases: ['网易(杭州)雷火', 'NetEase Leihuo, Hangzhou'],
+        section: 'workexperience',
+        selector: '.career-card > p:first-of-type > strong',
+        website: 'https://leihuo.163.com/',
+        logo: 'https://leihuo.163.com/favicon.ico',
+    },
+    {
+        aliases: ['阿里巴巴', 'Alibaba'],
+        section: 'workexperience',
+        selector: '.career-card > p:first-of-type > strong',
+        website: 'https://www.alibabagroup.com/',
+        logo: 'https://upload.wikimedia.org/wikipedia/commons/4/41/Alibaba_en_logo.svg',
+    },
+];
 let active_language = default_language;
 let main_scroll_spy = null;
 const getSavedLanguage = () => {
@@ -61,6 +91,147 @@ const groupMarkdownEntries = (container, cardClass) => {
         }
     });
 };
+const createEntryDetails = (card, label, content, detailsId) => {
+    const button = document.createElement('button');
+    const buttonLabel = document.createElement('span');
+    const buttonIcon = document.createElement('i');
+    const details = document.createElement('div');
+    button.type = 'button';
+    button.className = 'entry-toggle';
+    button.setAttribute('aria-expanded', 'false');
+    button.setAttribute('aria-controls', detailsId);
+    buttonLabel.textContent = label.replace(/[：:]\s*$/, '');
+    buttonIcon.className = 'bi bi-chevron-down';
+    buttonIcon.setAttribute('aria-hidden', 'true');
+    button.append(buttonLabel, buttonIcon);
+    details.id = detailsId;
+    details.className = 'entry-details';
+    details.hidden = true;
+    details.appendChild(content);
+    button.addEventListener('click', () => {
+        const shouldExpand = button.getAttribute('aria-expanded') === 'false';
+        button.setAttribute('aria-expanded', String(shouldExpand));
+        details.hidden = !shouldExpand;
+        card.classList.toggle('is-expanded', shouldExpand);
+        if (main_scroll_spy) {
+            main_scroll_spy.refresh();
+        }
+    });
+    card.append(button, details);
+};
+const makeProjectCardsExpandable = () => {
+    document.querySelectorAll('#experience-md .project-card').forEach((card, index) => {
+        const paragraphs = Array.from(card.children).filter(child => child.matches('p'));
+        const contentParagraph = paragraphs[1];
+        if (!contentParagraph) {
+            return;
+        }
+        const labels = contentParagraph.querySelectorAll(':scope > strong');
+        if (labels.length < 2) {
+            return;
+        }
+        const detailLabel = labels[labels.length - 1];
+        const detailParagraph = document.createElement('p');
+        let detailNode = detailLabel.nextSibling;
+        while (detailNode) {
+            const nextNode = detailNode.nextSibling;
+            detailParagraph.appendChild(detailNode);
+            detailNode = nextNode;
+        }
+        if (detailParagraph.firstChild && detailParagraph.firstChild.nodeName === 'BR') {
+            detailParagraph.firstChild.remove();
+        }
+        if (detailLabel.previousSibling && detailLabel.previousSibling.nodeName === 'BR') {
+            detailLabel.previousSibling.remove();
+        }
+        const label = detailLabel.textContent.trim();
+        detailLabel.remove();
+        createEntryDetails(card, label, detailParagraph, 'project-details-' + index);
+    });
+};
+const makeCareerCardsExpandable = () => {
+    document.querySelectorAll('#workexperience-md .career-card').forEach((card, index) => {
+        const detailLabel = card.querySelector(':scope > h4');
+        if (!detailLabel) {
+            return;
+        }
+        const detailContent = document.createDocumentFragment();
+        let detailNode = detailLabel.nextSibling;
+        while (detailNode) {
+            const nextNode = detailNode.nextSibling;
+            detailContent.appendChild(detailNode);
+            detailNode = nextNode;
+        }
+        const label = detailLabel.textContent.trim();
+        detailLabel.remove();
+        createEntryDetails(card, label, detailContent, 'career-details-' + index);
+    });
+};
+const createOrganizationProfile = (label, profile, index) => {
+    const wrapper = document.createElement('span');
+    const trigger = document.createElement('span');
+    const popover = document.createElement('span');
+    const logo = document.createElement('img');
+    const information = document.createElement('span');
+    const name = document.createElement('span');
+    const website = document.createElement('a');
+    wrapper.className = 'organization-profile';
+    trigger.className = 'organization-trigger';
+    trigger.tabIndex = 0;
+    trigger.textContent = label;
+    trigger.setAttribute('aria-controls', 'organization-profile-' + index);
+    popover.id = 'organization-profile-' + index;
+    popover.className = 'organization-popover';
+    logo.className = 'organization-logo';
+    logo.src = profile.logo;
+    logo.alt = label;
+    logo.loading = 'lazy';
+    logo.decoding = 'async';
+    information.className = 'organization-information';
+    name.className = 'organization-name';
+    name.textContent = label;
+    website.href = profile.website;
+    website.target = '_blank';
+    website.rel = 'noopener noreferrer';
+    website.textContent = new URL(profile.website).hostname.replace(/^www\./, '');
+    information.append(name, website);
+    popover.append(logo, information);
+    wrapper.append(trigger, popover);
+    return wrapper;
+};
+const wrapOrganizationAlias = (target, profile, index) => {
+    const walker = document.createTreeWalker(target, NodeFilter.SHOW_TEXT);
+    const textNodes = [];
+    let textNode = walker.nextNode();
+    while (textNode) {
+        textNodes.push(textNode);
+        textNode = walker.nextNode();
+    }
+    const matchedNode = textNodes.find(node => profile.aliases.some(alias => node.nodeValue.includes(alias)));
+    if (!matchedNode) {
+        return false;
+    }
+    const alias = profile.aliases.find(item => matchedNode.nodeValue.includes(item));
+    const aliasIndex = matchedNode.nodeValue.indexOf(alias);
+    const fragment = document.createDocumentFragment();
+    const leadingText = matchedNode.nodeValue.slice(0, aliasIndex);
+    const trailingText = matchedNode.nodeValue.slice(aliasIndex + alias.length);
+    if (leadingText) {
+        fragment.appendChild(document.createTextNode(leadingText));
+    }
+    fragment.appendChild(createOrganizationProfile(alias, profile, index));
+    if (trailingText) {
+        fragment.appendChild(document.createTextNode(trailingText));
+    }
+    matchedNode.replaceWith(fragment);
+    return true;
+};
+const enhanceOrganizationProfiles = () => {
+    organization_profiles.forEach((profile, index) => {
+        const container = document.getElementById(profile.section + '-md');
+        Array.from(container.querySelectorAll(profile.selector)).some(target => wrapOrganizationAlias(target, profile, index));
+    });
+};
 const renderMarkdownSections = markdownTexts => {
     section_names.forEach((name, index) => {
         const container = document.getElementById(name + '-md');
@@ -69,6 +240,9 @@ const renderMarkdownSections = markdownTexts => {
             groupMarkdownEntries(container, section_card_classes[name]);
         }
     });
+    makeProjectCardsExpandable();
+    makeCareerCardsExpandable();
+    enhanceOrganizationProfiles();
 };
 const typesetMathematics = async () => {
     if (!window.MathJax) {
