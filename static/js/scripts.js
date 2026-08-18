@@ -92,32 +92,29 @@ const groupMarkdownEntries = (container, cardClass) => {
     });
 };
 const createEntryDetails = (card, label, content, detailsId) => {
-    const button = document.createElement('button');
-    const buttonLabel = document.createElement('span');
-    const buttonIcon = document.createElement('i');
+    const disclosure = document.createElement('details');
+    const heading = document.createElement('summary');
+    const headingLabel = document.createElement('span');
+    const headingIcon = document.createElement('i');
     const details = document.createElement('div');
-    button.type = 'button';
-    button.className = 'entry-toggle';
-    button.setAttribute('aria-expanded', 'false');
-    button.setAttribute('aria-controls', detailsId);
-    buttonLabel.textContent = label.replace(/[：:]\s*$/, '');
-    buttonIcon.className = 'bi bi-chevron-down';
-    buttonIcon.setAttribute('aria-hidden', 'true');
-    button.append(buttonLabel, buttonIcon);
+    disclosure.className = 'entry-disclosure';
+    heading.className = 'entry-details-heading';
+    heading.setAttribute('aria-controls', detailsId);
+    headingLabel.textContent = label.replace(/[：:]\s*$/, '');
+    headingIcon.className = 'bi bi-chevron-down';
+    headingIcon.setAttribute('aria-hidden', 'true');
+    heading.append(headingLabel, headingIcon);
     details.id = detailsId;
     details.className = 'entry-details';
-    details.hidden = true;
     details.appendChild(content);
-    button.addEventListener('click', () => {
-        const shouldExpand = button.getAttribute('aria-expanded') === 'false';
-        button.setAttribute('aria-expanded', String(shouldExpand));
-        details.hidden = !shouldExpand;
-        card.classList.toggle('is-expanded', shouldExpand);
+    disclosure.addEventListener('toggle', () => {
+        card.classList.toggle('is-expanded', disclosure.open);
         if (main_scroll_spy) {
             main_scroll_spy.refresh();
         }
     });
-    card.append(button, details);
+    disclosure.append(heading, details);
+    card.appendChild(disclosure);
 };
 const makeProjectCardsExpandable = () => {
     document.querySelectorAll('#experience-md .project-card').forEach((card, index) => {
